@@ -6,14 +6,6 @@ class Window:
   def __init__(self, pos, size):
     self.pos = pos
     self.size = size
-  
-  def draw(self, img):
-    h, w = self.size
-    x, y = self.pos
-    sub_img = img[y:y+h, x:x+w]
-    white_rect = np.ones(sub_img.shape, dtype=np.uint8) * 255
-    res = cv2.addWeighted(sub_img, 0.5, white_rect, 0.5, 1.0)
-    img[y:y+h, x:x+w] = res
     
   def in_rectangle(self, point):
     return (self.pos[0] < point[0] < self.pos[0]+self.size[0]) and (self.pos[1] < point[1] < self.pos[1]+self.size[1])
@@ -88,6 +80,14 @@ class Drawer():
       x1 = int(self.img_size[1]*detections[idxs[1]].x)
       y1 = int(self.img_size[0]*detections[idxs[1]].y)
       cv2.line(image, (x0,y0), (x1,y1), color, 2)
+  
+  def draw_window(self, image, window):
+    h, w = window.size
+    x, y = window.pos
+    sub_img = image[y:y+h, x:x+w]
+    white_rect = np.ones(sub_img.shape, dtype=np.uint8) * 255
+    res = cv2.addWeighted(sub_img, 0.5, white_rect, 0.5, 1.0)
+    image[y:y+h, x:x+w] = res
       
   def draw_debug(self, image, results):
     pass
